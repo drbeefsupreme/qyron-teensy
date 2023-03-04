@@ -14,11 +14,11 @@ Firmware for the Teensy 3.6 for the Hyperstitional Metamandala Syzygyzer
 
 #define COLOR_DEPTH 24                  // known working: 24, 48 - If the sketch uses type `rgb24` directly, COLOR_DEPTH must be 24
 const uint8_t kMatrixWidth = 128;        // known working: 32, 64, 96, 128
-const uint8_t kMatrixHeight = 16;       // known working: 16, 32, 48, 64
+const uint8_t kMatrixHeight = 48;       // known working: 16, 32, 48, 64
 const uint8_t kRefreshDepth = 36;       // known working: 24, 36, 48
 const uint8_t kDmaBufferRows = 4;       // known working: 2-4, use 2 to save memory, more to keep from dropping frames and automatically lowering refresh rate
 const uint8_t kPanelType = SMARTMATRIX_HUB75_16ROW_MOD8SCAN; // use SMARTMATRIX_HUB75_16ROW_MOD8SCAN for common 16x32 panels, or use SMARTMATRIX_HUB75_64ROW_MOD32SCAN for common 64x64 panels
-const uint8_t kMatrixOptions = (SMARTMATRIX_OPTIONS_NONE);      // see http://docs.pixelmatix.com/SmartMatrix for options
+const uint8_t kMatrixOptions = (SM_HUB75_OPTIONS_C_SHAPE_STACKING);      // see http://docs.pixelmatix.com/SmartMatrix for options
 const uint8_t kBackgroundLayerOptions = (SM_BACKGROUND_OPTIONS_NONE);
 const uint8_t kScrollingLayerOptions = (SM_SCROLLING_OPTIONS_NONE);
 const uint8_t kIndexedLayerOptions = (SM_INDEXED_OPTIONS_NONE);
