@@ -5,6 +5,7 @@ Firmware for the Teensy 3.6 for the Hyperstitional Metamandala Syzygyzer
 #include <MatrixHardware_Teensy3_ShieldV4.h> //shield firmware
 #include <SmartMatrix.h> //HUB75 library
 #include <simpleRPC.h> //RPC library
+#include <InternalTemperature.h> //temp monitoring
 
 //local source
 #include "colorwheel.c" //for feature demo
@@ -103,6 +104,8 @@ const rgb24 defaultBackgroundColor = redColor;
 bool blinking = false;
 bool currentBG = false;
 
+float temperature;
+
 void setup() {
   delay(1000);
   Serial.begin(9600);
@@ -155,7 +158,10 @@ void loop() {
     //background
     setBlackBackground, "setBlackBackground: sets bg to black. @a: none @return: none.",
     setRedBackground, "setRedBackground: sets bg to red. @a: none @return: none.",
-    toggleBlinking, "toggleBlinking: sets the background to flash black and red. @a: none @return: none."
+    toggleBlinking, "toggleBlinking: sets the background to flash black and red. @a: none @return: none.",
+
+    //debug
+    getTemperature, "getTemperature: displays CPU temp. @a: none @return: none."
   );
 
   if(blinking == true) {
@@ -412,4 +418,18 @@ void drawRandomPixels() {
         }
         backgroundLayer.swapBuffers();
     }
+}
+
+//debug fns
+
+//TODO why doesn't this work?
+void getTemperature() {
+  scrollingLayerF.setColor({0xff, 0xff, 0xff});
+  scrollingLayerF.setMode(wrapForward);
+  scrollingLayerF.setSpeed(40);
+  scrollingLayerF.setFont(font6x10);
+  temperature = InternalTemperature.readTemperatureF();
+  char array[10];
+  sprintf(array, "%f", temperature);
+  scrollingLayer3.start(array, -1);
 }
