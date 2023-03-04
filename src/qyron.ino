@@ -267,9 +267,6 @@ void runFeatureDemo() {
     backgroundLayer.fillScreen(defaultBackgroundColor);
     backgroundLayer.swapBuffers();
 
-    int i, j;
-    unsigned long currentMillis;
-
     scrollingLayerF.setColor({0xff, 0xff, 0xff});
     scrollingLayerF.setMode(wrapForward);
     scrollingLayerF.setSpeed(40);
@@ -278,7 +275,7 @@ void runFeatureDemo() {
 }
 
 void drawRandomShapes() {
-    int i, j;
+    int i;
     unsigned long currentMillis;
 
     const int delayBetweenShapes = 250;
@@ -380,7 +377,7 @@ void drawRandomShapes() {
 }
 
 void drawRandomPixels() {
-    int i, j;
+    int i;
     unsigned long currentMillis;
 
     const uint transitionTime = 15000;
