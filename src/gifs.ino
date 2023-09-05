@@ -31,6 +31,8 @@ void drawPixelCallback(int16_t x, int16_t y, uint8_t red, uint8_t green, uint8_t
 
 // Setup method runs once, when the sketch starts
 void gif_setup() {
+    Serial.println("Starting GIF decoder setup");
+
     decoder.setScreenClearCallback(screenClearCallback);
     decoder.setUpdateScreenCallback(updateScreenCallback);
     decoder.setDrawPixelCallback(drawPixelCallback);
@@ -43,7 +45,7 @@ void gif_setup() {
     // NOTE: new callback function required after we moved to using the external AnimatedGIF library to decode GIFs
     decoder.setFileSizeCallback(fileSizeCallback);
 
-    Serial.println("Starting AnimatedGIFs Sketch");
+    Serial.println("Performing GIF checks...");
 
     if(initFileSystem(SD_CS) < 0) {
         scrollingLayer1.start("No SD card", -1);
@@ -66,11 +68,9 @@ void gif_setup() {
     }
 }
 
-static int gif_index = 0;
-static int nextGIF = 1;
 static int next_gif_trigger = false;
 
-void gif_loop_3() {
+void gif_loop() {
     // these variables keep track of when it's time to play a new GIF
     static unsigned long displayStartTime_millis;
     static bool playNextGif = true;     // we haven't loaded a GIF yet on first pass through, make sure we do that
@@ -83,17 +83,10 @@ void gif_loop_3() {
 
     unsigned long now = millis();
 
-#if 1
-    // default behavior is to play the gif for DISPLAY_TIME_SECONDS or for NUMBER_FULL_CYCLES, whichever comes first
-    if((now - displayStartTime_millis) > (DISPLAY_TIME_SECONDS * 1000) || decoder.getCycleNumber() > NUMBER_FULL_CYCLES || next_gif_trigger)
-        playNextGif = true;
-        next_gif_trigger = false;
-#else
-    // alt behavior is to play the gif until both DISPLAY_TIME_SECONDS and NUMBER_FULL_CYCLES have passed
-    if((now - displayStartTime_millis) > (DISPLAY_TIME_SECONDS * 1000) && decoder.getCycleNumber() > NUMBER_FULL_CYCLES || next_gif_trigger)
-        playNextGif = true;
-        next_gif_trigger = false;
-#endif
+    if(next_gif_trigger) {
+            playNextGif = true;
+            next_gif_trigger = false;
+    }
 
     // We only decode a GIF frame if the previous frame delay is over
     if((millis() - lastFrameDisplayTime) > currentFrameDelay) {
@@ -133,6 +126,5 @@ void gif_loop_3() {
 }
 
 void next_gif() {
-    scrollingLayer2.start("next_gif()", -1);
     next_gif_trigger = true;
 }

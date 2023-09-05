@@ -74,8 +74,6 @@ void setup() {
   matrixSetup();  //initializes the matrix and demo layers
   gif_setup();
 
-
-
   delay(3000);
   debug("entering loop...");
 }
@@ -119,11 +117,12 @@ void loop() {
     //background
     setBlackBackground, "setBlackBackground: sets bg to black. @a: none @return: none.",
     setRedBackground, "setRedBackground: sets bg to red. @a: none @return: none.",
-    toggleBlinking, "toggleBlinking: sets the background to flash black and red. @a: none @return: none."
+    toggleBlinking, "toggleBlinking: sets the background to flash black and red. @a: none @return: none.",
 
     //NOTE: YOU MUST INCLUDE THE NAME IN THE STRING!!!!
     //gifs
-    nextGif, "nextGif: select the next gif. @a: none @return: none",
+    nextGif, "nextGif: select the next gif. @a: none @return: none"
+
     //debug
 //    getTemperature, "getTemperature: displays CPU temp. @a: none @return: none."
   );
@@ -139,7 +138,7 @@ void loop() {
     delay(200);
   }
 
-  gif_loop_3();
+  gif_loop();
 }
 
 
@@ -154,7 +153,6 @@ void matrixSetup() {
   //features demo layers
   matrix.addLayer(&scrollingLayerF);
   matrix.addLayer(&indexedLayer);
-
 
   matrix.begin();
 
