@@ -13,7 +13,7 @@ GifDecoder<kMatrixWidth, kMatrixHeight, 12> decoder;
 #define SD_CS BUILTIN_SDCARD
 
 #define DISPLAY_TIME_SECONDS 10
-#define NUMBER_FULL_CYCLES   100
+#define NUMBER_FULL_CYCLES   3
 
 int num_files;
 
@@ -66,52 +66,75 @@ void gif_setup() {
     }
 }
 
+static int gif_index = 0;
+static int nextGIF = 1;
+
 void gif_loop() {
-    static unsigned long displayStartTime_millis;
-    static int nextGIF = 1;     // we haven't loaded a GIF yet on first pass through, make sure we do that
+//    static unsigned long displayStartTime_millis;
+//    static int nextGIF = 1;     // we haven't loaded a GIF yet on first pass through, make sure we do that
 
-    unsigned long now = millis();
+//     unsigned long now = millis();
 
-    static int index = 0;
-
-#if 1
-    // default behavior is to play the gif for DISPLAY_TIME_SECONDS or for NUMBER_FULL_CYCLES, whichever comes first
-    if((now - displayStartTime_millis) > (DISPLAY_TIME_SECONDS * 1000) || decoder.getCycleNumber() > NUMBER_FULL_CYCLES)
-        nextGIF = 1;
-#else
-    // alt behavior is to play the gif until both DISPLAY_TIME_SECONDS and NUMBER_FULL_CYCLES have passed
-    if((now - displayStartTime_millis) > (DISPLAY_TIME_SECONDS * 1000) && decoder.getCycleNumber() > NUMBER_FULL_CYCLES)
-        nextGIF = 1;
-#endif
+// #if 1
+//     // default behavior is to play the gif for DISPLAY_TIME_SECONDS or for NUMBER_FULL_CYCLES, whichever comes first
+//     if((now - displayStartTime_millis) > (DISPLAY_TIME_SECONDS * 1000) || decoder.getCycleNumber() > NUMBER_FULL_CYCLES)
+//         nextGIF = 1;
+// #else
+//     // alt behavior is to play the gif until both DISPLAY_TIME_SECONDS and NUMBER_FULL_CYCLES have passed
+//     if((now - displayStartTime_millis) > (DISPLAY_TIME_SECONDS * 1000) && decoder.getCycleNumber() > NUMBER_FULL_CYCLES)
+//         nextGIF = 1;
+// #endif
 
     if(nextGIF)
     {
+        if (++gif_index >= num_files) {
+            gif_index = 0;
+        }
         nextGIF = 0;
 
-        if (openGifFilenameByIndex(GIF_DIRECTORY, index) >= 0) {
+        if (openGifFilenameByIndex(GIF_DIRECTORY, gif_index) >= 0) {
             // Can clear screen for new animation here, but this might cause flicker with short animations
             // matrix.fillScreen(COLOR_BLACK);
             // matrix.swapBuffers();
 
             // start decoding, skipping to the next GIF if there's an error
             if(decoder.startDecoding() < 0) {
-                nextGIF = 1;
+                next_gif();
+//                nextGIF = 1;
                 return;
             }
 
             // Calculate time in the future to terminate animation
-            displayStartTime_millis = now;
+//            displayStartTime_millis = now;
         }
 
         // get the index for the next pass through
-        if (++index >= num_files) {
-            index = 0;
-        }
-
     }
 
     if(decoder.decodeFrame() < 0) {
         // There's an error with this GIF, go to the next one
-        nextGIF = 1;
+//        nextGIF = 1;
+        next_gif();
     }
+}
+
+void next_gif() {
+    nextGIF = 1;
+    gif_index++;
+    // if (++gif_index >= num_files) {
+    //     gif_index = 0;
+    // } else {
+    //     ++gif_index;
+    // }
+
+    // if (openGifFilenameByIndex(GIF_DIRECTORY, gif_index) >= 0) {
+    //     if (decoder.startDecoding() < 0) {
+    //         next_gif();
+    //         return;
+    //     }
+    // }
+
+    // if (decoder.decodeFrame () < 0) {
+    //     next_gif();
+    // }
 }

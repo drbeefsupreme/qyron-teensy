@@ -118,7 +118,10 @@ void loop() {
     //background
     setBlackBackground, "setBlackBackground: sets bg to black. @a: none @return: none.",
     setRedBackground, "setRedBackground: sets bg to red. @a: none @return: none.",
-    toggleBlinking, "toggleBlinking: sets the background to flash black and red. @a: none @return: none."
+    toggleBlinking, "toggleBlinking: sets the background to flash black and red. @a: none @return: none.",
+
+    //gifs
+    nextGif, "select the next gif. @a: none @return: none"
 
     //debug
 //    getTemperature, "getTemperature: displays CPU temp. @a: none @return: none."
@@ -380,6 +383,10 @@ void drawRandomPixels() {
         }
         backgroundLayer.swapBuffers();
     }
+}
+
+void nextGif() {
+  next_gif();
 }
 
 //debug fns
