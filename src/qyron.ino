@@ -115,14 +115,15 @@ void loop() {
     drawRandomShapes, "drawRandomShapes: draws random shapes. @a: none @return: none.",
     drawRandomPixels, "drawRandomPixels: draws random pixels. @a: none @return: none.",
 
+
     //background
     setBlackBackground, "setBlackBackground: sets bg to black. @a: none @return: none.",
     setRedBackground, "setRedBackground: sets bg to red. @a: none @return: none.",
-    toggleBlinking, "toggleBlinking: sets the background to flash black and red. @a: none @return: none.",
+    toggleBlinking, "toggleBlinking: sets the background to flash black and red. @a: none @return: none."
 
+    //NOTE: YOU MUST INCLUDE THE NAME IN THE STRING!!!!
     //gifs
-    nextGif, "select the next gif. @a: none @return: none"
-
+    nextGif, "nextGif: select the next gif. @a: none @return: none",
     //debug
 //    getTemperature, "getTemperature: displays CPU temp. @a: none @return: none."
   );
@@ -138,7 +139,7 @@ void loop() {
     delay(200);
   }
 
-  gif_loop();
+  gif_loop_3();
 }
 
 
