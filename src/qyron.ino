@@ -54,7 +54,8 @@ int freeRam()
 //SmartMatrixParser smParser(1024);
 //
 // constants
-const int defaultBrightness = (18*255)/100;
+//const int defaultBrightness = (18*255)/100;
+const int defaultBrightness = 255;
 const int defaultScrollOffset = 6; //not sure if i use this
 const rgb24 blackColor = {0, 0, 0};
 const rgb24 redColor = {0x40, 0, 0};
@@ -64,6 +65,9 @@ bool blinking = false;
 bool currentBG = false;
 
 //float temperature;
+//
+
+static int currentMillis; // used in the main loop for timing
 
 void setup() {
   delay(1000);
@@ -75,6 +79,8 @@ void setup() {
   gif_setup();
 
   delay(3000);
+
+  currentMillis = millis();
   debug("entering loop...");
 }
 
@@ -85,6 +91,11 @@ Tuple<Args...> pack(Args... args) {
 
   return t;
 }
+
+static int shapes_loop = -1;
+static int shapesMillis;
+const int delayBetweenShapes = 250;
+
 
 void loop() {
   //The following adds SmartMatrix functions to the interface to be passed over the wire to the controller
@@ -112,20 +123,37 @@ void loop() {
     runFeatureDemo, "runFeatureDemo: runs the feature demo. @a: none @return: none.",
     drawRandomShapes, "drawRandomShapes: draws random shapes. @a: none @return: none.",
     drawRandomPixels, "drawRandomPixels: draws random pixels. @a: none @return: none.",
-
+    hitShapes, "hitShapes: draws random shapes in parallel. @a: none @return: none.",
 
     //background
     setBlackBackground, "setBlackBackground: sets bg to black. @a: none @return: none.",
     setRedBackground, "setRedBackground: sets bg to red. @a: none @return: none.",
     toggleBlinking, "toggleBlinking: sets the background to flash black and red. @a: none @return: none.",
 
-    //NOTE: YOU MUST INCLUDE THE NAME IN THE STRING!!!!
+    //NOTE: YOU MUST INCLUDE THE NAME IN THE STRING!!!! IT HAS SEMANTIC MEANING!
     //gifs
-    nextGif, "nextGif: select the next gif. @a: none @return: none"
+    nextGif, "nextGif: select the next gif. @a: none @return: none",
+    noGif, "noGif: turns off the gif. @a: none @return: none"
 
     //debug
 //    getTemperature, "getTemperature: displays CPU temp. @a: none @return: none."
   );
+
+  if(shapes_loop == 0) {
+    shapesMillis = millis();
+    shapes_loop++;
+  }
+
+  if(shapes_loop >= 0) {
+    if (millis() > shapesMillis + delayBetweenShapes) {
+      shapesMillis = millis();
+      drawRandomShapesIteration();
+      shapes_loop++;
+    }
+  }
+  if(shapes_loop >= 10000) {
+    shapes_loop = -1;
+  }
 
   if(blinking == true) {
     if(currentBG == true) {
@@ -244,6 +272,113 @@ void runFeatureDemo() {
     scrollingLayerF.start("THE TOO LATE SHOW WITH DR. BEELZEBUB CROW", 1);
 }
 
+void hitShapes() {
+  shapes_loop = 0;
+}
+
+void drawRandomShapesIteration() {
+//    int i;
+
+   const int delayBetweenShapes = 50;
+
+   // for (i = 0; i < 10000; i += delayBetweenShapes) {
+       // draw for 100ms, then update frame, repeat
+//       currentMillis = millis();
+
+       int x0, y0, x1, y1, x2, y2, radius, radius2;
+       // x0,y0 pair is always on the screen
+       x0 = random(matrix.getScreenWidth());
+       y0 = random(matrix.getScreenHeight());
+
+ #if 0
+       // x1,y1 pair can be off screen;
+       x1 = random(-matrix.getScreenWidth(), 2 * matrix.getScreenWidth());
+       y1 = random(-matrix.getScreenHeight(), 2 * matrix.getScreenHeight());
+ #else
+       x1 = random(matrix.getScreenWidth());
+       y1 = random(matrix.getScreenHeight());
+ #endif
+       // x2,y2 pair is on screen;
+       x2 = random(matrix.getScreenWidth());
+       y2 = random(matrix.getScreenHeight());
+
+       // radius is positive, up to screen width size
+       radius = random(matrix.getScreenWidth());
+       radius2 = random(matrix.getScreenWidth());
+
+       rgb24 fillColor = {(uint8_t)random(192), (uint8_t)random(192), (uint8_t)random(192)};
+       rgb24 outlineColor = {(uint8_t)random(192), (uint8_t)random(192), (uint8_t)random(192)};
+
+       switch (random(15)) {
+       case 0:
+           backgroundLayer.drawPixel(x0, y0, outlineColor);
+           break;
+
+       case 1:
+           backgroundLayer.drawLine(x0, y0, x1, y1, outlineColor);
+           break;
+
+       case 2:
+           backgroundLayer.drawCircle(x0, y0, radius, outlineColor);
+           break;
+
+       case 3:
+           backgroundLayer.drawTriangle(x0, y0, x1, y1, x2, y2, outlineColor);
+           break;
+
+       case 4:
+           backgroundLayer.drawRectangle(x0, y0, x1, y1, outlineColor);
+           break;
+
+       case 5:
+           backgroundLayer.drawRoundRectangle(x0, y0, x1, y1, radius, outlineColor);
+           break;
+
+       case 6:
+           backgroundLayer.fillCircle(x0, y0, radius, fillColor);
+           break;
+
+       case 7:
+           backgroundLayer.fillTriangle(x0, y0, x1, y1, x2, y2, fillColor);
+           break;
+
+       case 8:
+           backgroundLayer.fillRectangle(x0, y0, x1, y1, fillColor);
+           break;
+
+       case 9:
+           backgroundLayer.fillRoundRectangle(x0, y0, x1, y1, radius, fillColor);
+           break;
+
+       case 10:
+           backgroundLayer.fillCircle(x0, y0, radius, outlineColor, fillColor);
+           break;
+
+       case 11:
+           backgroundLayer.fillTriangle(x0, y0, x1, y1, x2, y2, outlineColor, fillColor);
+           break;
+
+       case 12:
+           backgroundLayer.fillRectangle(x0, y0, x1, y1, outlineColor, fillColor);
+           break;
+
+       case 13:
+           backgroundLayer.fillRoundRectangle(x0, y0, x1, y1, radius, outlineColor, fillColor);
+           break;
+
+       case 14:
+           backgroundLayer.drawEllipse(x0, y0, radius, radius2, outlineColor);
+
+       default:
+           break;
+       }
+   backgroundLayer.swapBuffers();
+   //backgroundLayer.fillScreen({0,0,0});
+//   while (millis() < currentMillis + delayBetweenShapes);
+}
+
+//TODO move the loop outside so that you can draw shapes while other things
+//are happening with eg. gifs
 void drawRandomShapes() {
     int i;
     unsigned long currentMillis;
@@ -386,6 +521,10 @@ void drawRandomPixels() {
 
 void nextGif() {
   next_gif();
+}
+
+void noGif() {
+  no_gif();
 }
 
 //debug fns
