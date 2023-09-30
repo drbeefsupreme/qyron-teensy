@@ -96,6 +96,10 @@ static int shapes_loop = -1;
 static int shapesMillis;
 const int delayBetweenShapes = 250;
 
+static int pixels_loop = -1;
+static int pixelsMillis;
+const uint pixelsTransitionTime = 15000;
+
 
 void loop() {
   //The following adds SmartMatrix functions to the interface to be passed over the wire to the controller
@@ -124,6 +128,7 @@ void loop() {
     drawRandomShapes, "drawRandomShapes: draws random shapes. @a: none @return: none.",
     drawRandomPixels, "drawRandomPixels: draws random pixels. @a: none @return: none.",
     hitShapes, "hitShapes: draws random shapes in parallel. @a: none @return: none.",
+    hitPixels, "hitPixels: draws random pixels in paralell. @a: none @return: none.",
 
     //background
     setBlackBackground, "setBlackBackground: sets bg to black. @a: none @return: none.",
@@ -153,6 +158,19 @@ void loop() {
   }
   if(shapes_loop >= 10000) {
     shapes_loop = -1;
+  }
+
+  if(pixels_loop == 0) {
+    pixelsMillis = millis();
+    pixels_loop++;
+  }
+
+  if(pixels_loop >= 0) {
+    drawRandomPixelsIteration();
+    pixels_loop++;
+  }
+  if(pixels_loop >= 10000) {
+    pixels_loop = -1;
   }
 
   if(blinking == true) {
@@ -274,6 +292,10 @@ void runFeatureDemo() {
 
 void hitShapes() {
   shapes_loop = 0;
+}
+
+void hitPixels() {
+  pixels_loop = 0;
 }
 
 void drawRandomShapesIteration() {
@@ -479,6 +501,40 @@ void drawRandomShapes() {
         //backgroundLayer.fillScreen({0,0,0});
         while (millis() < currentMillis + delayBetweenShapes);
     }
+}
+
+void drawRandomPixelsIteration() {
+    int i;
+//    const uint transitionTime = 15000;
+
+ //   backgroundLayer.fillScreen({0, 0, 0});
+//    backgroundLayer.swapBuffers();
+
+//    while (millis() - currentMillis < transitionTime) {
+        int x0, y0;
+
+        rgb24 color;
+        float fraction = ((float)millis() - pixelsMillis) / ((float)pixelsTransitionTime / 2);
+
+        if (millis() - pixelsMillis < pixelsTransitionTime / 2) {
+            color.red = 255 - 255.0 * fraction;
+            color.green = 255.0 * fraction;
+            color.blue = 0;
+        }
+        else {
+            color.red = 0;
+            color.green = 255 - 255.0 / 2 * (fraction - 1.0);
+            color.blue = 255.0 * (fraction - 1.0);
+        }
+
+        for (i = 0; i < 20; i++) {
+            x0 = random(matrix.getScreenWidth());
+            y0 = random(matrix.getScreenHeight());
+
+            backgroundLayer.drawPixel(x0, y0, color);
+        }
+        backgroundLayer.swapBuffers();
+//    }
 }
 
 void drawRandomPixels() {
