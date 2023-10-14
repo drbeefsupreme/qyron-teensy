@@ -9,10 +9,10 @@
 GifDecoder<kMatrixWidth, kMatrixHeight, 12> decoder;
 
 // Teensy SD library requires trailing slash in directory name
-#define GIF_DIRECTORY "/gifs/"
+#define GIF_DIRECTORY "/gifs/koyaanisqatsi"
 #define SD_CS BUILTIN_SDCARD
 
-#define DISPLAY_TIME_SECONDS 100
+#define DISPLAY_TIME_SECONDS 15
 #define NUMBER_FULL_CYCLES   10
 
 int num_files;
@@ -73,9 +73,10 @@ static int next_gif_trigger = false;
 
 void gif_loop() {
     if(gif_bool) {
+
         // these variables keep track of when it's time to play a new GIF
-        static unsigned long displayStartTime_millis;
         static bool playNextGif = true;     // we haven't loaded a GIF yet on first pass through, make sure we do that
+        static unsigned long displayStartTime_millis;
 
         // these variables keep track of when we're done displaying the last frame and are ready for a new frame
         static uint32_t lastFrameDisplayTime = 0;
@@ -89,6 +90,7 @@ void gif_loop() {
                 playNextGif = true;
                 next_gif_trigger = false;
         }
+
 
         // We only decode a GIF frame if the previous frame delay is over
         if((millis() - lastFrameDisplayTime) > currentFrameDelay) {
@@ -124,6 +126,11 @@ void gif_loop() {
                 playNextGif = true;
                 currentFrameDelay = 0;
             }
+
+            // if((now - displayStartTime_millis) > DISPLAY_TIME_SECONDS) {
+            //     playNextGif = true;
+            //     next_gif_trigger = true;
+            // }
         }
     }
 }

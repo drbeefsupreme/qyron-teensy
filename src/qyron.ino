@@ -100,6 +100,9 @@ static int pixels_loop = -1;
 static int pixelsMillis;
 const uint pixelsTransitionTime = 15000;
 
+static bool gifs_loop = -1;
+static int gifsMillis;
+const int delayBetweenGifs = 30000;
 
 void loop() {
   //The following adds SmartMatrix functions to the interface to be passed over the wire to the controller
@@ -138,7 +141,11 @@ void loop() {
     //NOTE: YOU MUST INCLUDE THE NAME IN THE STRING!!!! IT HAS SEMANTIC MEANING!
     //gifs
     nextGif, "nextGif: select the next gif. @a: none @return: none",
-    noGif, "noGif: turns off the gif. @a: none @return: none"
+    noGif, "noGif: turns off the gif. @a: none @return: none",
+    enableGifsLoop, "enableGifsLoop: start cycling. @a: none @return: none",
+    disableGifsLoop, "disableGifsLoop: stop cycline. @a: none @return: none",
+
+    clearLoops, "clearLoops: turns off loops. @a: none @return: none"
 
     //debug
 //    getTemperature, "getTemperature: displays CPU temp. @a: none @return: none."
@@ -173,6 +180,17 @@ void loop() {
     pixels_loop = -1;
   }
 
+  if(gifs_loop == 0) {
+      gifsMillis = millis();
+      gifs_loop++;
+  }
+  if(gifs_loop = 1) {
+      if (millis() > gifsMillis + delayBetweenGifs) {
+          nextGif();
+          gifs_loop = 0;
+      }
+  }
+
   if(blinking == true) {
     if(currentBG == true) {
       setBlackBackground();
@@ -187,6 +205,20 @@ void loop() {
   gif_loop();
 }
 
+void clearLoops() {
+    pixels_loop = -1;
+    shapes_loop = -1;
+    gifs_loop = -1;
+}
+
+void enableGifsLoop() {
+    gifs_loop = 0;
+}
+
+void disableGifsLoop() {
+    gifs_loop = -1;
+    noGif();
+}
 
 void matrixSetup() {
   matrix.addLayer(&backgroundLayer);
