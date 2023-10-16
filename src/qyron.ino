@@ -16,6 +16,19 @@ Firmware for the Teensy 3.6 for the Hyperstitional Metamandala Syzygyzer
 // Ports
 #define SERIAL_DEBUG Serial //Serial port for debugging
 
+#include <GifDecoder.h>
+#include <FilenameFunctions.h>
+
+// Teensy SD library requires trailing slash in directory name
+#define K_DIRECTORY "/gifs/koyaanisqatsi/"
+#define O_DIRECTORY "/gifs/obama/"
+#define F_DIRECTORY "/gifs/flag/"
+#define D_DIRECTORY "/gifs/drugs/"
+#define J_DIRECTORY "/gifs/joker/"
+#define S_DIRECTORY "/gifs/spooky/"
+#define B_DIRECTORY "/gifs/subgenius/"
+#define T_DIRECTORY "/gifs/transparent/"
+#define A_DIRECTORY "/gifs/aj/"
 
 //comment this line out to disable debugging
 
@@ -64,6 +77,16 @@ const rgb24 defaultBackgroundColor = redColor;
 bool blinking = false;
 bool currentBG = false;
 
+static int num_filesK;
+static int num_filesO;
+static int num_filesF;
+static int num_filesD;
+static int num_filesJ;
+static int num_filesS;
+static int num_filesB;
+static int num_filesT;
+static int num_filesA;
+
 //float temperature;
 //
 
@@ -81,6 +104,18 @@ void setup() {
   delay(3000);
 
   currentMillis = millis();
+
+  num_filesK = enumerateGIFFiles(K_DIRECTORY, true);
+  num_filesO = enumerateGIFFiles(O_DIRECTORY, true);
+  num_filesF = enumerateGIFFiles(F_DIRECTORY, true);
+  num_filesD = enumerateGIFFiles(D_DIRECTORY, true);
+  num_filesJ = enumerateGIFFiles(J_DIRECTORY, true);
+  num_filesS = enumerateGIFFiles(S_DIRECTORY, true);
+  num_filesB = enumerateGIFFiles(B_DIRECTORY, true);
+  num_filesT = enumerateGIFFiles(T_DIRECTORY, true);
+  num_filesA = enumerateGIFFiles(A_DIRECTORY, true);
+
+
   debug("entering loop...");
 }
 
@@ -102,7 +137,9 @@ const uint pixelsTransitionTime = 15000;
 
 static bool gifs_loop = -1;
 static int gifsMillis;
-const int delayBetweenGifs = 30000;
+const int delayBetweenGifs = 5000;
+
+static int gif_dir = 0;
 
 void loop() {
   //The following adds SmartMatrix functions to the interface to be passed over the wire to the controller
@@ -144,6 +181,16 @@ void loop() {
     noGif, "noGif: turns off the gif. @a: none @return: none",
     enableGifsLoop, "enableGifsLoop: start cycling. @a: none @return: none",
     disableGifsLoop, "disableGifsLoop: stop cycline. @a: none @return: none",
+
+    gifK, "gifK: koyaanisqatsi. @a: none @return: none",
+    gifO, "gifO: obama. @a: none @return: none",
+    gifF, "gifF: flag. @a: none @return: none",
+    gifD, "gifD: drugs. @a: none @return: none",
+    gifJ, "gifJ: joker. @a: none @return: none",
+    gifS, "gifS: spooky. @a: none @return: none",
+    gifB, "gifB: subgenius. @a: none @return: none",
+    gifT, "gifT: transparent. @a: none @return: none",
+    gifA, "gifA: alex jones. @a: none @return: none",
 
     clearLoops, "clearLoops: turns off loops. @a: none @return: none"
 
@@ -202,20 +249,95 @@ void loop() {
     delay(200);
   }
 
-  gif_loop();
+  if(gifs_loop >= 0) {
+    if(gif_dir == 1) {
+        gif_loop(K_DIRECTORY, num_filesK);
+    }
+    if(gif_dir == 2) {
+        gif_loop(O_DIRECTORY, num_filesO);
+    }
+    if(gif_dir == 3) {
+        gif_loop(F_DIRECTORY, num_filesF);
+    }
+    if(gif_dir == 4) {
+        gif_loop(D_DIRECTORY, num_filesD);
+    }
+    if(gif_dir == 5) {
+        gif_loop(J_DIRECTORY, num_filesJ);
+    }
+    if(gif_dir == 6) {
+        gif_loop(S_DIRECTORY, num_filesS);
+    }
+    if(gif_dir == 7) {
+        gif_loop(B_DIRECTORY, num_filesB);
+    }
+    if(gif_dir == 8) {
+        gif_loop(T_DIRECTORY, num_filesT);
+    }
+    if(gif_dir == 9) {
+        gif_loop(A_DIRECTORY, num_filesA);
+    }
+  }
 }
 
 void clearLoops() {
     pixels_loop = -1;
     shapes_loop = -1;
     gifs_loop = -1;
+    gif_dir = 0;
 }
 
 void enableGifsLoop() {
     gifs_loop = 0;
 }
 
+void gifK() {
+    gif_dir = 1;
+    gifs_loop = 0;
+}
+
+void gifO() {
+    gif_dir = 2;
+    gifs_loop = 0;
+}
+
+void gifF() {
+    gif_dir = 3;
+    gifs_loop = 0;
+}
+
+void gifD() {
+    gif_dir = 4;
+    gifs_loop = 0;
+}
+
+void gifJ() {
+    gif_dir = 5;
+    gifs_loop = 0;
+}
+
+void gifS() {
+    gif_dir = 6;
+    gifs_loop = 0;
+}
+
+void gifB() {
+    gif_dir = 7;
+    gifs_loop = 0;
+}
+
+void gifT() {
+    gif_dir = 8;
+    gifs_loop = 0;
+}
+
+void gifA() {
+    gif_dir = 9;
+    gifs_loop = 0;
+}
+
 void disableGifsLoop() {
+    gif_dir = 0;
     gifs_loop = -1;
     noGif();
 }

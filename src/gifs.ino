@@ -8,14 +8,11 @@
 
 GifDecoder<kMatrixWidth, kMatrixHeight, 12> decoder;
 
-// Teensy SD library requires trailing slash in directory name
-#define GIF_DIRECTORY "/gifs/koyaanisqatsi"
 #define SD_CS BUILTIN_SDCARD
 
 #define DISPLAY_TIME_SECONDS 15
 #define NUMBER_FULL_CYCLES   10
 
-int num_files;
 bool gif_bool = false;
 
 void screenClearCallback(void) {
@@ -54,25 +51,25 @@ void gif_setup() {
         while(1);
     }
 
-    num_files = enumerateGIFFiles(GIF_DIRECTORY, true);
+// //    num_files = enumerateGIFFiles(GIF_DIRECTORY, true);
 
-    if(num_files < 0) {
-        scrollingLayer1.start("No gifs directory", -1);
-        Serial.println("No gifs directory");
-        while(1);
-    }
+//     if(num_files < 0) {
+//         scrollingLayer1.start("No gifs directory", -1);
+//         Serial.println("No gifs directory");
+//         while(1);
+//     }
 
-    if(!num_files) {
-        scrollingLayer1.start("Empty gifs directory", -1);
-        Serial.println("Empty gifs directory");
-        while(1);
-    }
+//     if(!num_files) {
+//         scrollingLayer1.start("Empty gifs directory", -1);
+//         Serial.println("Empty gifs directory");
+//         while(1);
+//     }
 }
 
 static int next_gif_trigger = false;
 
-void gif_loop() {
-    if(gif_bool) {
+void gif_loop(char *dirname, int num_files) {
+    // if(gif_bool) {
 
         // these variables keep track of when it's time to play a new GIF
         static bool playNextGif = true;     // we haven't loaded a GIF yet on first pass through, make sure we do that
@@ -98,7 +95,7 @@ void gif_loop() {
             {
                 playNextGif = false;
 
-                if (openGifFilenameByIndex(GIF_DIRECTORY, index) >= 0) {
+                if (openGifFilenameByIndex(dirname, index) >= 0) {
                     // start decoding, skipping to the next GIF if there's an error
                     if(decoder.startDecoding() < 0) {
                         playNextGif = true;
@@ -132,7 +129,7 @@ void gif_loop() {
             //     next_gif_trigger = true;
             // }
         }
-    }
+//    }
 }
 
 void next_gif() {
