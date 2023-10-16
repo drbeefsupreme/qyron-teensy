@@ -294,46 +294,55 @@ void enableGifsLoop() {
 void gifK() {
     gif_dir = 1;
     gifs_loop = 0;
+    nextGif();
 }
 
 void gifO() {
     gif_dir = 2;
     gifs_loop = 0;
+    nextGif();
 }
 
 void gifF() {
     gif_dir = 3;
     gifs_loop = 0;
+    nextGif();
 }
 
 void gifD() {
     gif_dir = 4;
     gifs_loop = 0;
+    nextGif();
 }
 
 void gifJ() {
     gif_dir = 5;
     gifs_loop = 0;
+    nextGif();
 }
 
 void gifS() {
     gif_dir = 6;
     gifs_loop = 0;
+    nextGif();
 }
 
 void gifB() {
     gif_dir = 7;
     gifs_loop = 0;
+    nextGif();
 }
 
 void gifT() {
     gif_dir = 8;
     gifs_loop = 0;
+    nextGif();
 }
 
 void gifA() {
     gif_dir = 9;
     gifs_loop = 0;
+    nextGif();
 }
 
 void disableGifsLoop() {
