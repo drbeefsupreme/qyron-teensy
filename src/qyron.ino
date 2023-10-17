@@ -105,15 +105,15 @@ void setup() {
 
   currentMillis = millis();
 
-  num_filesK = enumerateGIFFiles(K_DIRECTORY, true);
-  num_filesO = enumerateGIFFiles(O_DIRECTORY, true);
-  num_filesF = enumerateGIFFiles(F_DIRECTORY, true);
-  num_filesD = enumerateGIFFiles(D_DIRECTORY, true);
-  num_filesJ = enumerateGIFFiles(J_DIRECTORY, true);
-  num_filesS = enumerateGIFFiles(S_DIRECTORY, true);
-  num_filesB = enumerateGIFFiles(B_DIRECTORY, true);
-  num_filesT = enumerateGIFFiles(T_DIRECTORY, true);
-  num_filesA = enumerateGIFFiles(A_DIRECTORY, true);
+  num_filesK = enumerateGIFFiles(K_DIRECTORY, false);
+  num_filesO = enumerateGIFFiles(O_DIRECTORY, false);
+  num_filesF = enumerateGIFFiles(F_DIRECTORY, false);
+  num_filesD = enumerateGIFFiles(D_DIRECTORY, false);
+  num_filesJ = enumerateGIFFiles(J_DIRECTORY, false);
+  num_filesS = enumerateGIFFiles(S_DIRECTORY, false);
+  num_filesB = enumerateGIFFiles(B_DIRECTORY, false);
+  num_filesT = enumerateGIFFiles(T_DIRECTORY, false);
+  num_filesA = enumerateGIFFiles(A_DIRECTORY, false);
 
 
   debug("entering loop...");
@@ -263,7 +263,8 @@ void loop() {
         gif_loop(D_DIRECTORY, num_filesD);
     }
     if(gif_dir == 5) {
-        gif_loop(J_DIRECTORY, num_filesJ);
+        gif_loop(J_DIRECTORY, 8);
+//        gif_loop(J_DIRECTORY, num_filesJ);
     }
     if(gif_dir == 6) {
         gif_loop(S_DIRECTORY, num_filesS);
@@ -292,54 +293,82 @@ void enableGifsLoop() {
 }
 
 void gifK() {
+    gif_setup();
+    disableGifsLoop();
+
+
     gif_dir = 1;
     gifs_loop = 0;
     nextGif();
 }
 
 void gifO() {
+    gif_setup();
+    disableGifsLoop();
+
     gif_dir = 2;
+
     gifs_loop = 0;
     nextGif();
 }
 
 void gifF() {
+    gif_setup();
+    disableGifsLoop();
+
     gif_dir = 3;
     gifs_loop = 0;
     nextGif();
 }
 
 void gifD() {
+    gif_setup();
+    disableGifsLoop();
+
     gif_dir = 4;
     gifs_loop = 0;
     nextGif();
 }
 
 void gifJ() {
+    gif_setup();
+    disableGifsLoop();
+
     gif_dir = 5;
     gifs_loop = 0;
     nextGif();
 }
 
 void gifS() {
+    gif_setup();
+    disableGifsLoop();
+
     gif_dir = 6;
     gifs_loop = 0;
     nextGif();
 }
 
 void gifB() {
+    gif_setup();
+    disableGifsLoop();
+
     gif_dir = 7;
     gifs_loop = 0;
     nextGif();
 }
 
 void gifT() {
+    gif_setup();
+    disableGifsLoop();
+
     gif_dir = 8;
     gifs_loop = 0;
     nextGif();
 }
 
 void gifA() {
+    gif_setup();
+    disableGifsLoop();
     gif_dir = 9;
     gifs_loop = 0;
     nextGif();
