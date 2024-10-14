@@ -514,21 +514,28 @@ void toggleTextMode() {
     scrollingLayer3.setOffsetFromTop(spacing * 3);
     scrollingLayer4.setOffsetFromTop(spacing * 4);
     scrollingLayer5.setOffsetFromTop(spacing * 5);
+
     scrollingLayer1.setSpeed(0);
     scrollingLayer2.setSpeed(0);
     scrollingLayer3.setSpeed(0);
     scrollingLayer4.setSpeed(0);
     scrollingLayer5.setSpeed(0);
+
     scrollingLayer1.setMode(stopped);
     scrollingLayer2.setMode(stopped);
     scrollingLayer3.setMode(stopped);
     scrollingLayer4.setMode(stopped);
     scrollingLayer5.setMode(stopped);
+
     scrollingLayer1.setStartOffsetFromLeft(0);
     scrollingLayer2.setStartOffsetFromLeft(0);
     scrollingLayer3.setStartOffsetFromLeft(0);
     scrollingLayer4.setStartOffsetFromLeft(0);
     scrollingLayer5.setStartOffsetFromLeft(0);
+
+    scrollingLayer4.setRotation(rotation0);
+    scrollingLayer5.setRotation(rotation0);
+
     scrollingLayer1.setColor({0xff, 0xff, 0xff});
     scrollingLayer2.setColor({0xff, 0xff, 0xff});
     scrollingLayer3.setColor({0xff, 0xff, 0xff});
