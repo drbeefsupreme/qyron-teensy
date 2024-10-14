@@ -474,6 +474,7 @@ void matrixSetup() {
   scrollingLayer4.setOffsetFromTop((kMatrixWidth/2 + kMatrixWidth/4) - 5);
   scrollingLayer5.setOffsetFromTop((kMatrixWidth/2 + kMatrixWidth/4) - 5);
   scrollingLayerT.setOffsetFromTop(1);
+  scrollingLayerT.setStartOffsetFromLeft(0);
 
   matrix.setBrightness(defaultBrightness);
 
