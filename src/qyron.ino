@@ -162,6 +162,12 @@ void loop() {
     pack(&scrollingLayer5, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::start), "scrollingLayer5_start: display text on layer 5. @a: char* @return: none",
     pack(&scrollingLayerF, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::start), "scrollingLayerF_start: display text on layer F. @a: char* @return: none",
 
+    pack(&fixedLayer1, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::start), "fixedLayer1_start: display text on fixed layer 1. @a: char* @return: none",
+    pack(&fixedLayer2, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::start), "fixedLayer2_start: display text on fixed layer 2. @a: char* @return: none",
+    pack(&fixedLayer3, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::start), "fixedLayer3_start: display text on fixed layer 3. @a: char* @return: none",
+    pack(&fixedLayer4, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::start), "fixedLayer4_start: display text on fixed layer 4. @a: char* @return: none",
+    pack(&fixedLayer5, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::start), "fixedLayer5_start: display text on fixed layer 5. @a: char* @return: none",
+
     /* //speed */
     pack(&scrollingLayer1, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::setSpeed), "scrollingLayer1_speed: change speed on layer 1. @a: unsigned char @return: none",
     pack(&scrollingLayer2, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::setSpeed), "scrollingLayer2_speed: change speed on layer 2. @a: unsigned char @return: none",
@@ -431,6 +437,11 @@ void matrixSetup() {
   matrix.addLayer(&scrollingLayer3);
   matrix.addLayer(&scrollingLayer4);
   matrix.addLayer(&scrollingLayer5);
+  matrix.addLayer(&fixedLayer1);
+  matrix.addLayer(&fixedLayer2);
+  matrix.addLayer(&fixedLayer3);
+  matrix.addLayer(&fixedLayer4);
+  matrix.addLayer(&fixedLayer5);
 
   //features demo layers
   matrix.addLayer(&scrollingLayerF);
@@ -450,11 +461,29 @@ void matrixSetup() {
   scrollingLayer4.setColor({0x00, 0x00, 0xff});
   scrollingLayer5.setColor({0xff, 0x00, 0x00});
 
+  fixedLayer1.setColor({0xff, 0xff, 0xff});
+  fixedLayer2.setColor({0xff, 0xff, 0xff});
+  fixedLayer3.setColor({0xff, 0xff, 0xff});
+  fixedLayer4.setColor({0xff, 0xff, 0xff});
+  fixedLayer5.setColor({0xff, 0xff, 0xff});
+
   scrollingLayer1.setSpeed(10);
   scrollingLayer2.setSpeed(20);
   scrollingLayer3.setSpeed(40);
   scrollingLayer4.setSpeed(80);
   scrollingLayer5.setSpeed(120);
+
+  fixedLayer1.setSpeed(0);
+  fixedLayer2.setSpeed(0);
+  fixedLayer3.setSpeed(0);
+  fixedLayer4.setSpeed(0);
+  fixedLayer5.setSpeed(0);
+
+  fixedLayer1.setFont(gohufont11b);
+  fixedLayer2.setFont(gohufont11b);
+  fixedLayer3.setFont(gohufont11b);
+  fixedLayer4.setFont(gohufont11b);
+  fixedLayer5.setFont(gohufont11b);
 
   scrollingLayer1.setFont(gohufont11b);
   scrollingLayer2.setFont(gohufont11);
@@ -471,6 +500,11 @@ void matrixSetup() {
   scrollingLayer4.setOffsetFromTop((kMatrixWidth/2 + kMatrixWidth/4) - 5);
   scrollingLayer5.setOffsetFromTop((kMatrixWidth/2 + kMatrixWidth/4) - 5);
 
+  fixedLayer1.setOffsetFromTop(1 * (kMatrixHeight/6) - 5);
+  fixedLayer2.setOffsetFromTop(2 * (kMatrixHeight/6) - 5);
+  fixedLayer3.setOffsetFromTop(3 * (kMatrixHeight/6) - 5);
+  fixedLayer4.setOffsetFromTop(4 * (kMatrixHeight/6) - 5);
+  fixedLayer5.setOffsetFromTop(5 * (kMatrixHeight/6) - 5);
 
   matrix.setBrightness(defaultBrightness);
 
