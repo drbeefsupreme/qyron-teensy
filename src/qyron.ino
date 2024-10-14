@@ -150,6 +150,8 @@ const int delayBetweenGifs = 60000;
 
 static int gif_dir = 5; // default joker loop
 
+static int text_mode = 0;  // default scrolling text
+
 void loop() {
   //The following adds SmartMatrix functions to the interface to be passed over the wire to the controller
   interface(
@@ -170,10 +172,11 @@ void loop() {
     pack(&scrollingLayer5, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::setSpeed), "scrollingLayer5_speed: change speed on layer 5. @a: unsigned char @return: none",
     pack(&scrollingLayerF, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::setSpeed), "scrollingLayerF_speed: change speed on layer F. @a: unsigned char @return: none",
 
+    toggleTextMode, "toggleTextMode: switches between normal and feud mode. @a: none @return: none",
+
     setBrightness, "setBrightness: sets brightness. @a: int @return: none.",
 
     //routines
-    runFeatureDemo, "runFeatureDemo: runs the feature demo. @a: none @return: none.",
     drawRandomShapes, "drawRandomShapes: draws random shapes. @a: none @return: none.",
     drawRandomPixels, "drawRandomPixels: draws random pixels. @a: none @return: none.",
     hitShapes, "hitShapes: draws random shapes in parallel. @a: none @return: none.",
@@ -497,6 +500,76 @@ void toggleBlinking() {
   }
 }
 
+void toggleTextMode() {
+  if (text_mode == 0) {
+    text_mode = 1;
+    scrollingLayer1.setFont(gohufont11b);
+    scrollingLayer2.setFont(gohufont11b);
+    scrollingLayer3.setFont(gohufont11b);
+    scrollingLayer4.setFont(gohufont11b);
+    scrollingLayer5.setFont(gohufont11b);
+    scrollingLayer1.setOffsetFromTop(3);
+    scrollingLayer2.setOffsetFromTop(scrollingLayer1.getFont()->Height + 3 + 3);
+    scrollingLayer3.setOffsetFromTop(scrollingLayer1.getFont()->Height + 3 + scrollingLayer2.getFont()->Height + 3 + 3);
+    scrollingLayer4.setOffsetFromTop(scrollingLayer1.getFont()->Height + 3 + scrollingLayer2.getFont()->Height + 3 + scrollingLayer3.getFont()->Height + 3 + 3);
+    scrollingLayer5.setOffsetFromTop(scrollingLayer1.getFont()->Height + 3 + scrollingLayer2.getFont()->Height + 3 + scrollingLayer3.getFont()->Height + 3 + scrollingLayer4.getFont()->Height + 3 + 3);
+    scrollingLayer1.setSpeed(0);
+    scrollingLayer2.setSpeed(0);
+    scrollingLayer3.setSpeed(0);
+    scrollingLayer4.setSpeed(0);
+    scrollingLayer5.setSpeed(0);
+    scrollingLayer1.setMode(stopped);
+    scrollingLayer2.setMode(stopped);
+    scrollingLayer3.setMode(stopped);
+    scrollingLayer4.setMode(stopped);
+    scrollingLayer5.setMode(stopped);
+    scrollingLayer1.setStartOffsetFromLeft(0);
+    scrollingLayer2.setStartOffsetFromLeft(0);
+    scrollingLayer3.setStartOffsetFromLeft(0);
+    scrollingLayer4.setStartOffsetFromLeft(0);
+    scrollingLayer5.setStartOffsetFromLeft(0);
+    scrollingLayer1.setColor({0xff, 0xff, 0xff});
+    scrollingLayer2.setColor({0xff, 0xff, 0xff});
+    scrollingLayer3.setColor({0xff, 0xff, 0xff});
+    scrollingLayer4.setColor({0xff, 0xff, 0xff});
+    scrollingLayer5.setColor({0xff, 0xff, 0xff});
+  } else {
+    text_mode = 0;
+    scrollingLayer1.setMode(wrapForward);
+    scrollingLayer2.setMode(bounceForward);
+    scrollingLayer3.setMode(bounceReverse);
+    scrollingLayer4.setMode(wrapForward);
+    scrollingLayer5.setMode(bounceForward);
+
+    scrollingLayer1.setColor({0xff, 0xff, 0xff});
+    scrollingLayer2.setColor({0xff, 0xf7, 0x0e});
+    scrollingLayer3.setColor({0xc0, 0x23, 0x36});
+    scrollingLayer4.setColor({0x00, 0x00, 0xff});
+    scrollingLayer5.setColor({0xff, 0x00, 0x00});
+
+    scrollingLayer1.setSpeed(10);
+    scrollingLayer2.setSpeed(20);
+    scrollingLayer3.setSpeed(40);
+    scrollingLayer4.setSpeed(80);
+    scrollingLayer5.setSpeed(120);
+
+    scrollingLayer1.setFont(gohufont11b);
+    scrollingLayer2.setFont(gohufont11);
+    scrollingLayer3.setFont(font8x13);
+    scrollingLayer4.setFont(font6x10);
+    scrollingLayer5.setFont(font5x7);
+
+    scrollingLayer4.setRotation(rotation270);
+    scrollingLayer5.setRotation(rotation90);
+
+    scrollingLayer1.setOffsetFromTop((kMatrixHeight/2) - 5);
+    scrollingLayer2.setOffsetFromTop((kMatrixHeight/4) - 5);
+    scrollingLayer3.setOffsetFromTop((kMatrixHeight/2 + kMatrixHeight/4) - 5);
+    scrollingLayer4.setOffsetFromTop((kMatrixWidth/2 + kMatrixWidth/4) - 5);
+    scrollingLayer5.setOffsetFromTop((kMatrixWidth/2 + kMatrixWidth/4) - 5);
+  }
+}
+
 void setBrightness(int brightness) {
   matrix.setBrightness(brightness);
 }
@@ -513,17 +586,6 @@ void drawBitmap(int16_t x, int16_t y, const gimp32x32bitmap* bitmap) {
       backgroundLayer.drawPixel(x + j, y + i, pixel);
     }
   }
-}
-
-void runFeatureDemo() {
-    backgroundLayer.fillScreen(defaultBackgroundColor);
-    backgroundLayer.swapBuffers();
-
-    scrollingLayerF.setColor({0xff, 0xff, 0xff});
-    scrollingLayerF.setMode(wrapForward);
-    scrollingLayerF.setSpeed(40);
-    scrollingLayerF.setFont(font6x10);
-    scrollingLayerF.start("THE TOO LATE SHOW WITH DR. BEELZEBUB CROW", 1);
 }
 
 void hitShapes() {
