@@ -26,18 +26,6 @@ SMARTMATRIX_ALLOCATE_SCROLLING_LAYER(scrollingLayer2, kMatrixWidth, kMatrixHeigh
 SMARTMATRIX_ALLOCATE_SCROLLING_LAYER(scrollingLayer3, kMatrixWidth, kMatrixHeight, COLOR_DEPTH, kScrollingLayerOptions);
 SMARTMATRIX_ALLOCATE_SCROLLING_LAYER(scrollingLayer4, kMatrixWidth, kMatrixHeight, COLOR_DEPTH, kScrollingLayerOptions);
 SMARTMATRIX_ALLOCATE_SCROLLING_LAYER(scrollingLayer5, kMatrixWidth, kMatrixHeight, COLOR_DEPTH, kScrollingLayerOptions);
-
-
-//Creates SMLayerIndexed
-SMARTMATRIX_ALLOCATE_INDEXED_LAYER(indexedLayer, kMatrixWidth, kMatrixHeight, COLOR_DEPTH, kIndexedLayerOptions);
-
-
-//Feature demo layers
-#ifdef USE_ADAFRUIT_GFX_LAYERS
-  // there's not enough allocated memory to hold the long strings used by this sketch by default, this increases the memory, but it may not be large enough
-  SMARTMATRIX_ALLOCATE_GFX_MONO_LAYER(scrollingLayerF, kMatrixWidth, kMatrixHeight, 6*1024, 1, COLOR_DEPTH, kScrollingLayerOptions);
-#else
-  SMARTMATRIX_ALLOCATE_SCROLLING_LAYER(scrollingLayerF, kMatrixWidth, kMatrixHeight, COLOR_DEPTH, kScrollingLayerOptions);
-#endif
+SMARTMATRIX_ALLOCATE_SCROLLING_LAYER(scrollingLayerT, kMatrixWidth, kMatrixHeight, COLOR_DEPTH, kScrollingLayerOptions);
 
 #endif // GLOBAL_H_

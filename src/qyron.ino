@@ -162,7 +162,7 @@ void loop() {
     pack(&scrollingLayer3, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::start), "scrollingLayer3_start: display text on layer 3. @a: char* @return: none",
     pack(&scrollingLayer4, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::start), "scrollingLayer4_start: display text on layer 4. @a: char* @return: none",
     pack(&scrollingLayer5, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::start), "scrollingLayer5_start: display text on layer 5. @a: char* @return: none",
-    pack(&scrollingLayerF, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::start), "scrollingLayerF_start: display text on layer F. @a: char* @return: none",
+    pack(&scrollingLayerT, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::start), "scrollingLayerT_start: display text on layer T. @a: char* @return: none",
 
     /* //speed */
     pack(&scrollingLayer1, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::setSpeed), "scrollingLayer1_speed: change speed on layer 1. @a: unsigned char @return: none",
@@ -170,7 +170,6 @@ void loop() {
     pack(&scrollingLayer3, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::setSpeed), "scrollingLayer3_speed: change speed on layer 3. @a: unsigned char @return: none",
     pack(&scrollingLayer4, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::setSpeed), "scrollingLayer4_speed: change speed on layer 4. @a: unsigned char @return: none",
     pack(&scrollingLayer5, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::setSpeed), "scrollingLayer5_speed: change speed on layer 5. @a: unsigned char @return: none",
-    pack(&scrollingLayerF, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::setSpeed), "scrollingLayerF_speed: change speed on layer F. @a: unsigned char @return: none",
 
     toggleTextMode, "toggleTextMode: switches between normal and feud mode. @a: none @return: none",
 
@@ -434,10 +433,7 @@ void matrixSetup() {
   matrix.addLayer(&scrollingLayer3);
   matrix.addLayer(&scrollingLayer4);
   matrix.addLayer(&scrollingLayer5);
-
-  //features demo layers
-  matrix.addLayer(&scrollingLayerF);
-  matrix.addLayer(&indexedLayer);
+  matrix.addLayer(&scrollingLayerT);
 
   matrix.begin();
 
@@ -446,24 +442,28 @@ void matrixSetup() {
   scrollingLayer3.setMode(bounceReverse);
   scrollingLayer4.setMode(wrapForward);
   scrollingLayer5.setMode(bounceForward);
+  scrollingLayerT.setMode(stopped);
 
   scrollingLayer1.setColor({0xff, 0xff, 0xff});
   scrollingLayer2.setColor({0xff, 0xf7, 0x0e});
   scrollingLayer3.setColor({0xc0, 0x23, 0x36});
   scrollingLayer4.setColor({0x00, 0x00, 0xff});
   scrollingLayer5.setColor({0xff, 0x00, 0x00});
+  scrollingLayerT.setColor({0xff, 0xff, 0xff});
 
   scrollingLayer1.setSpeed(10);
   scrollingLayer2.setSpeed(20);
   scrollingLayer3.setSpeed(40);
   scrollingLayer4.setSpeed(80);
   scrollingLayer5.setSpeed(120);
+  scrollingLayerT.setSpeed(0);
 
   scrollingLayer1.setFont(gohufont11b);
   scrollingLayer2.setFont(gohufont11);
   scrollingLayer3.setFont(font8x13);
   scrollingLayer4.setFont(font6x10);
   scrollingLayer5.setFont(font5x7);
+  scrollingLayerT.setFont(gohufont11b);
 
   scrollingLayer4.setRotation(rotation270);
   scrollingLayer5.setRotation(rotation90);
@@ -473,12 +473,11 @@ void matrixSetup() {
   scrollingLayer3.setOffsetFromTop((kMatrixHeight/2 + kMatrixHeight/4) - 5);
   scrollingLayer4.setOffsetFromTop((kMatrixWidth/2 + kMatrixWidth/4) - 5);
   scrollingLayer5.setOffsetFromTop((kMatrixWidth/2 + kMatrixWidth/4) - 5);
-
+  scrollingLayerT.setOffsetFromTop(1);
 
   matrix.setBrightness(defaultBrightness);
 
   backgroundLayer.enableColorCorrection(true); //wat this?
-
 }
 
 
