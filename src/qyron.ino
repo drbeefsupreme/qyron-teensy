@@ -508,11 +508,12 @@ void toggleTextMode() {
     scrollingLayer3.setFont(gohufont11b);
     scrollingLayer4.setFont(gohufont11b);
     scrollingLayer5.setFont(gohufont11b);
-    scrollingLayer1.setOffsetFromTop(3);
-    scrollingLayer2.setOffsetFromTop(scrollingLayer1.getFont()->Height + 3 + 3);
-    scrollingLayer3.setOffsetFromTop(scrollingLayer1.getFont()->Height + 3 + scrollingLayer2.getFont()->Height + 3 + 3);
-    scrollingLayer4.setOffsetFromTop(scrollingLayer1.getFont()->Height + 3 + scrollingLayer2.getFont()->Height + 3 + scrollingLayer3.getFont()->Height + 3 + 3);
-    scrollingLayer5.setOffsetFromTop(scrollingLayer1.getFont()->Height + 3 + scrollingLayer2.getFont()->Height + 3 + scrollingLayer3.getFont()->Height + 3 + scrollingLayer4.getFont()->Height + 3 + 3);
+    int spacing = kMatrixHeight / 6;  // Divide the matrix height into 6 parts (5 layers + 1 space at the bottom)
+    scrollingLayer1.setOffsetFromTop(spacing);
+    scrollingLayer2.setOffsetFromTop(spacing * 2);
+    scrollingLayer3.setOffsetFromTop(spacing * 3);
+    scrollingLayer4.setOffsetFromTop(spacing * 4);
+    scrollingLayer5.setOffsetFromTop(spacing * 5);
     scrollingLayer1.setSpeed(0);
     scrollingLayer2.setSpeed(0);
     scrollingLayer3.setSpeed(0);
