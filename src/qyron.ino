@@ -160,7 +160,6 @@ void loop() {
     pack(&scrollingLayer3, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::start), "scrollingLayer3_start: display text on layer 3. @a: char* @return: none",
     pack(&scrollingLayer4, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::start), "scrollingLayer4_start: display text on layer 4. @a: char* @return: none",
     pack(&scrollingLayer5, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::start), "scrollingLayer5_start: display text on layer 5. @a: char* @return: none",
-    pack(&scrollingLayerF, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::start), "scrollingLayerF_start: display text on layer F. @a: char* @return: none",
 
     pack(&fixedLayer1, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::start), "fixedLayer1_start: display text on fixed layer 1. @a: char* @return: none",
     pack(&fixedLayer2, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::start), "fixedLayer2_start: display text on fixed layer 2. @a: char* @return: none",
@@ -174,12 +173,10 @@ void loop() {
     pack(&scrollingLayer3, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::setSpeed), "scrollingLayer3_speed: change speed on layer 3. @a: unsigned char @return: none",
     pack(&scrollingLayer4, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::setSpeed), "scrollingLayer4_speed: change speed on layer 4. @a: unsigned char @return: none",
     pack(&scrollingLayer5, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::setSpeed), "scrollingLayer5_speed: change speed on layer 5. @a: unsigned char @return: none",
-    pack(&scrollingLayerF, &SMLayerScrolling<RGB_TYPE(COLOR_DEPTH), kScrollingLayerOptions>::setSpeed), "scrollingLayerF_speed: change speed on layer F. @a: unsigned char @return: none",
 
     setBrightness, "setBrightness: sets brightness. @a: int @return: none.",
 
     //routines
-    runFeatureDemo, "runFeatureDemo: runs the feature demo. @a: none @return: none.",
     drawRandomShapes, "drawRandomShapes: draws random shapes. @a: none @return: none.",
     drawRandomPixels, "drawRandomPixels: draws random pixels. @a: none @return: none.",
     hitShapes, "hitShapes: draws random shapes in parallel. @a: none @return: none.",
@@ -443,10 +440,6 @@ void matrixSetup() {
   matrix.addLayer(&fixedLayer4);
   matrix.addLayer(&fixedLayer5);
 
-  //features demo layers
-  matrix.addLayer(&scrollingLayerF);
-  matrix.addLayer(&indexedLayer);
-
   matrix.begin();
 
   scrollingLayer1.setMode(wrapForward);
@@ -547,17 +540,6 @@ void drawBitmap(int16_t x, int16_t y, const gimp32x32bitmap* bitmap) {
       backgroundLayer.drawPixel(x + j, y + i, pixel);
     }
   }
-}
-
-void runFeatureDemo() {
-    backgroundLayer.fillScreen(defaultBackgroundColor);
-    backgroundLayer.swapBuffers();
-
-    scrollingLayerF.setColor({0xff, 0xff, 0xff});
-    scrollingLayerF.setMode(wrapForward);
-    scrollingLayerF.setSpeed(40);
-    scrollingLayerF.setFont(font6x10);
-    scrollingLayerF.start("THE TOO LATE SHOW WITH DR. BEELZEBUB CROW", 1);
 }
 
 void hitShapes() {
