@@ -2,6 +2,7 @@
 Firmware for the Teensy 3.6 for the Hyperstitional Metamandala Syzygyzer
 */
 
+//#define USE_ADAFRUIT_GFX_LAYERS
 #include <MatrixHardware_Teensy4_ShieldV5.h> //shield firmware
 #include <SmartMatrix.h> //HUB75 library
 #include <simpleRPC.h> //RPC library
@@ -29,8 +30,12 @@ Firmware for the Teensy 3.6 for the Hyperstitional Metamandala Syzygyzer
 #define B_DIRECTORY "/gifs/subgenius/"
 #define T_DIRECTORY "/gifs/transparent/"
 #define A_DIRECTORY "/gifs/aj/"
+#define P_DIRECTORY "/gifs/blue/"
+#define H_DIRECTORY "/gifs/hank/"
+
 
 //comment this line out to disable debugging
+//
 
 #define DEBUG
 
@@ -85,6 +90,8 @@ static int num_filesJ;
 static int num_filesS;
 static int num_filesB;
 static int num_filesT;
+static int num_filesP;
+static int num_filesH;
 static int num_filesA;
 
 //float temperature;
@@ -113,6 +120,8 @@ void setup() {
   num_filesS = enumerateGIFFiles(S_DIRECTORY, false);
   num_filesB = enumerateGIFFiles(B_DIRECTORY, false);
   num_filesT = enumerateGIFFiles(T_DIRECTORY, false);
+  num_filesP = enumerateGIFFiles(P_DIRECTORY, false);
+  num_filesH = enumerateGIFFiles(H_DIRECTORY, false);
   num_filesA = enumerateGIFFiles(A_DIRECTORY, false);
 
 
@@ -135,11 +144,11 @@ static int pixels_loop = -1;
 static int pixelsMillis;
 const uint pixelsTransitionTime = 15000;
 
-static bool gifs_loop = -1;
+static bool gifs_loop = 0;  // default is gif
 static int gifsMillis;
-const int delayBetweenGifs = 5000;
+const int delayBetweenGifs = 60000;
 
-static int gif_dir = 0;
+static int gif_dir = 5; // default joker loop
 
 void loop() {
   //The following adds SmartMatrix functions to the interface to be passed over the wire to the controller
@@ -191,6 +200,8 @@ void loop() {
     gifB, "gifB: subgenius. @a: none @return: none",
     gifT, "gifT: transparent. @a: none @return: none",
     gifA, "gifA: alex jones. @a: none @return: none",
+    gifP, "gifP: blue chew. @a: none @return: none",
+    gifH, "gifH: hank. @a: none @return: none",
 
     clearLoops, "clearLoops: turns off loops. @a: none @return: none"
 
@@ -231,7 +242,7 @@ void loop() {
       gifsMillis = millis();
       gifs_loop++;
   }
-  if(gifs_loop = 1) {
+  if(gifs_loop == 1) {
       if (millis() > gifsMillis + delayBetweenGifs) {
           nextGif();
           gifs_loop = 0;
@@ -255,28 +266,42 @@ void loop() {
     }
     if(gif_dir == 2) {
         gif_loop(O_DIRECTORY, num_filesO);
+
     }
     if(gif_dir == 3) {
         gif_loop(F_DIRECTORY, num_filesF);
+
     }
     if(gif_dir == 4) {
         gif_loop(D_DIRECTORY, num_filesD);
+
     }
     if(gif_dir == 5) {
-        gif_loop(J_DIRECTORY, 8);
-//        gif_loop(J_DIRECTORY, num_filesJ);
+        gif_loop(J_DIRECTORY, num_filesJ);
+
     }
     if(gif_dir == 6) {
         gif_loop(S_DIRECTORY, num_filesS);
+
     }
     if(gif_dir == 7) {
         gif_loop(B_DIRECTORY, num_filesB);
+
     }
     if(gif_dir == 8) {
         gif_loop(T_DIRECTORY, num_filesT);
+
     }
     if(gif_dir == 9) {
         gif_loop(A_DIRECTORY, num_filesA);
+
+    }
+    if(gif_dir == 10) {
+        gif_loop(P_DIRECTORY, num_filesP);
+
+    }
+    if(gif_dir == 11) {
+        gif_loop(H_DIRECTORY, num_filesH);
     }
   }
 }
@@ -296,7 +321,6 @@ void gifK() {
     gif_setup();
     disableGifsLoop();
 
-
     gif_dir = 1;
     gifs_loop = 0;
     nextGif();
@@ -306,8 +330,8 @@ void gifO() {
     gif_setup();
     disableGifsLoop();
 
-    gif_dir = 2;
 
+    gif_dir = 2;
     gifs_loop = 0;
     nextGif();
 }
@@ -315,6 +339,7 @@ void gifO() {
 void gifF() {
     gif_setup();
     disableGifsLoop();
+
 
     gif_dir = 3;
     gifs_loop = 0;
@@ -369,7 +394,26 @@ void gifT() {
 void gifA() {
     gif_setup();
     disableGifsLoop();
+
     gif_dir = 9;
+    gifs_loop = 0;
+    nextGif();
+}
+
+void gifP() {
+    gif_setup();
+    disableGifsLoop();
+
+    gif_dir = 10;
+    gifs_loop = 0;
+    nextGif();
+}
+
+void gifH() {
+    gif_setup();
+    disableGifsLoop();
+
+    gif_dir = 11;
     gifs_loop = 0;
     nextGif();
 }
@@ -768,6 +812,7 @@ void drawRandomPixels() {
 }
 
 void nextGif() {
+  SERIAL_DEBUG.println("nextGif()");
   next_gif();
 }
 
