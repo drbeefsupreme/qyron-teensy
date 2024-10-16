@@ -33,6 +33,7 @@ Firmware for the Teensy 3.6 for the Hyperstitional Metamandala Syzygyzer
 #define P_DIRECTORY "/gifs/blue/"
 #define H_DIRECTORY "/gifs/hank/"
 #define C_DIRECTORY "/gifs/judge/"
+#define M_DIRECTORY "/gifs/mil/"
 
 
 //comment this line out to disable debugging
@@ -95,6 +96,7 @@ static int num_filesP;
 static int num_filesH;
 static int num_filesA;
 static int num_filesC;
+static int num_filesM;
 //float temperature;
 //
 
@@ -125,7 +127,7 @@ void setup() {
   num_filesH = enumerateGIFFiles(H_DIRECTORY, false);
   num_filesA = enumerateGIFFiles(A_DIRECTORY, false);
   num_filesC = enumerateGIFFiles(C_DIRECTORY, false);
-
+  num_filesM = enumerateGIFFiles(M_DIRECTORY, false);
   debug("entering loop...");
 }
 
@@ -206,7 +208,7 @@ void loop() {
     gifP, "gifP: blue chew. @a: none @return: none",
     gifH, "gifH: hank. @a: none @return: none",
     gifC, "gifC: judge. @a: none @return: none",
-
+    gifM, "gifM: mil. @a: none @return: none",
     clearLoops, "clearLoops: turns off loops. @a: none @return: none"
 
     //debug
@@ -309,6 +311,9 @@ void loop() {
     }
     if(gif_dir == 12) {
         gif_loop(C_DIRECTORY, num_filesC);
+    }
+    if(gif_dir == 13) {
+        gif_loop(M_DIRECTORY, num_filesM);
     }
   }
 }
@@ -430,6 +435,15 @@ void gifC() {
     disableGifsLoop();
 
     gif_dir = 12;
+    gifs_loop = 0;
+    nextGif();
+}
+
+void gifM() {
+    gif_setup();
+    disableGifsLoop();
+
+    gif_dir = 13;
     gifs_loop = 0;
     nextGif();
 }
